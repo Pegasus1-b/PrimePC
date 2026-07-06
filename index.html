@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[PrimePC] - เอกสารประกอบโครงงาน CSI204</title>
+
+  <!-- Marked.js: แปลง Markdown เป็น HTML -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Mermaid.js: เรนเดอร์ System Architecture Diagram -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    window.mermaid = mermaid;
+    mermaid.initialize({ startOnLoad: false, theme: 'default' });
+  </script>
+
+  <style>
+    :root {
+      --accent: #2563eb;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "TH Sarabun New", Tahoma, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    header {
+      background: linear-gradient(135deg, var(--accent), #1e40af);
+      color: #fff;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 .5rem; font-size: 1.8rem; }
+    header p { margin: 0; opacity: .9; }
+    .container {
+      max-width: 900px;
+      margin: -2rem auto 3rem;
+      padding: 0 1rem;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,.04);
+    }
+    .card h2 {
+      margin-top: 0;
+      color: var(--accent);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: .5rem;
+    }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th, td { border: 1px solid var(--border); padding: .5rem .75rem; text-align: left; }
+    th { background: #eff6ff; }
+    pre { background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+    code { background: #eef2ff; padding: .1rem .35rem; border-radius: 4px; }
+    a { color: var(--accent); }
+    #diagram { text-align: center; overflow-x: auto; }
+    .nav { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+    .nav a { color: #fff; background: rgba(255,255,255,.15); padding: .4rem 1rem; border-radius: 999px; text-decoration: none; font-size: .9rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🖥️ [PrimePC]</h1>
+    <p>เว็บไซต์จำหน่ายอุปกรณ์คอมพิวเตอร์ | CSI204 Digital Platform for Software Development</p>
+    <div class="nav">
+      <a href="#readme">README</a>
+      <a href="#analysis">Analysis & Design</a>
+      <a href="#architecture">System Architecture</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="card" id="readme">
+      <h2>📘 README</h2>
+      <div id="readmeContent">กำลังโหลดเอกสาร...</div>
+    </div>
+
+    <div class="card" id="analysis">
+      <h2>📋 Analysis &amp; Design</h2>
+      <div id="analysisContent">กำลังโหลดเอกสาร...</div>
+    </div>
+
+    <div class="card" id="architecture">
+      <h2>🗺️ System Architecture Diagram</h2>
+      <div id="diagram">กำลังโหลดแผนภาพ...</div>
+    </div>
+  </div>
+
+  <script>
+    // โหลดและแปลง Markdown เป็น HTML ด้วย marked.js
+    async function loadMarkdown(path, targetId) {
+      try {
+        const res = await fetch(path);
+        const text = await res.text();
+        document.getElementById(targetId).innerHTML = marked.parse(text);
+      } catch (err) {
+        document.getElementById(targetId).innerHTML =
+          '<p style="color:red">ไม่สามารถโหลดเอกสาร: ' + path + '</p>';
+      }
+    }
+
+    // โหลดและเรนเดอร์ Mermaid Diagram
+    async function loadDiagram(path, targetId) {
+      try {
+        const res = await fetch(path);
+        const code = await res.text();
+        const { svg } = await window.mermaid.render('architectureGraph', code);
+        document.getElementById(targetId).innerHTML = svg;
+      } catch (err) {
+        document.getElementById(targetId).innerHTML =
+          '<p style="color:red">ไม่สามารถโหลดแผนภาพ: ' + path + '</p>';
+      }
+    }
+
+    loadMarkdown('README.md', 'readmeContent');
+    loadMarkdown('docs/analysis-design.md', 'analysisContent');
+    window.addEventListener('load', () => {
+      loadDiagram('docs/architecture.mmd', 'diagram');
+    });
+  </script>
+
+</body>
+</html>
