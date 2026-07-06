@@ -1,0 +1,52 @@
+graph TD
+    subgraph Client["🖥️ Client Layer"]
+        A[Web Browser<br/>React / Next.js]
+        B[Mobile Browser<br/>Responsive Web]
+    end
+
+    subgraph Gateway["🌐 Gateway Layer"]
+        C[CDN / CloudFront]
+        D[API Gateway]
+    end
+
+    subgraph Backend["⚙️ Backend Layer (Services)"]
+        E[Auth / User Service]
+        F[Product Service]
+        G[Cart Service]
+        H[Order Service]
+        I[Payment Service]
+    end
+
+    subgraph Data["💾 Data Layer"]
+        J[(MySQL / PostgreSQL<br/>Primary DB)]
+        K[(Redis<br/>Cache / Session)]
+        L[(Elasticsearch<br/>Product Search)]
+        M[(Object Storage<br/>Product Images)]
+    end
+
+    subgraph External["🔗 External Services"]
+        N[Payment Gateway<br/>Omise / 2C2P / PromptPay]
+        O[Shipping API<br/>Kerry / Flash / ไปรษณีย์ไทย]
+        P[LINE Notify / Email]
+    end
+
+    A --> C
+    B --> C
+    C --> D
+    D --> E
+    D --> F
+    D --> G
+    D --> H
+    D --> I
+
+    E --> J
+    F --> J
+    F --> L
+    F --> M
+    G --> K
+    H --> J
+    I --> J
+
+    I --> N
+    H --> O
+    H --> P
